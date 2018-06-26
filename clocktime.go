@@ -51,20 +51,22 @@ func (ct *ClockTime) UnmarshalJSON(b []byte) error {
 	var s string
 	if err := json.Unmarshal(b, &s); err == nil {
 		parts := strings.Split(s, ":")
-		if len(parts) != 3 {
-			return ErrInvalidTimeFormat
-		}
+		ct.Hour, ct.Min, ct.Sec = 0, 0, 0
 		ct.Hour, err = strconv.Atoi(parts[0])
 		if err != nil {
 			return ErrInvalidTimeFormat
 		}
-		ct.Min, err = strconv.Atoi(parts[1])
-		if err != nil {
-			return ErrInvalidTimeFormat
+		if len(parts) > 1 {
+			ct.Min, err = strconv.Atoi(parts[1])
+			if err != nil {
+				return ErrInvalidTimeFormat
+			}
 		}
-		ct.Sec, err = strconv.Atoi(parts[2])
-		if err != nil {
-			return ErrInvalidTimeFormat
+		if len(parts) > 2 {
+			ct.Sec, err = strconv.Atoi(parts[2])
+			if err != nil {
+				return ErrInvalidTimeFormat
+			}
 		}
 		return nil
 	} else {
