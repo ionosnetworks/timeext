@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"strings"
+	"time"
 )
 
 type ISOWeekday int
@@ -20,6 +21,26 @@ const (
 )
 
 var ErrInvalidWeekday = errors.New("Invalid weekday.")
+
+func ISOWeekdayFromTime(t time.Time) ISOWeekday {
+	switch t.Weekday() {
+	case time.Sunday:
+		return Sunday
+	case time.Monday:
+		return Monday
+	case time.Tuesday:
+		return Tuesday
+	case time.Wednesday:
+		return Wednesday
+	case time.Thursday:
+		return Thursday
+	case time.Friday:
+		return Friday
+	case time.Saturday:
+		return Saturday
+	}
+	panic("unreachable")
+}
 
 func (wd *ISOWeekday) UnmarshalJSON(b []byte) error {
 	var s string
