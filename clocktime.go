@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var errInvalidType = errors.New("invalid type")
@@ -14,6 +15,14 @@ var ErrInvalidTimeFormat = errors.New("Invalid time format.")
 
 type ClockTime struct {
 	Hour, Min, Sec int
+}
+
+func Clock(t time.Time) ClockTime {
+	return ClockTime{
+		t.Hour(),
+		t.Minute(),
+		t.Second(),
+	}
 }
 
 func (ct *ClockTime) Scan(value interface{}) error {
